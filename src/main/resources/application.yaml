@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: activityservice
+
+  data:
+    mongodb:
+      #uri: ${MONGODB_URI:mongodb://localhost:27017/fitnessactivity}
+      uri: ${MONGODB_URI:mongodb://root:root@localhost:27017/?authSource=admin}
+      database: fitnessactivity
+
+server:
+  port: ${PORT:8080}
