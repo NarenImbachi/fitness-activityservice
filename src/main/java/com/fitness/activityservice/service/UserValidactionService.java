@@ -6,13 +6,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserValidactionService {
     private final WebClient userServiceWebClient;
 
     public boolean isUserValid(String userId) {
+        log.info("Calling user validation API for userId: {}", userId);
         try {
             // Realiza una solicitud GET al User Service para verificar si el usuario existe
             return userServiceWebClient.get()
@@ -21,7 +24,6 @@ public class UserValidactionService {
                     .bodyToMono(Boolean.class) // Convierte el cuerpo de la respuesta a un Mono<Boolean>
                     .block(); // Bloquea hasta obtener la respuesta
         } catch (WebClientResponseException e) {
-            // Si ocurre un error (como 404), consideramos que el usuario no es válido
             if(e.getStatusCode() == HttpStatus.NOT_FOUND) 
                 throw new RuntimeException("User not found");
             else if(e.getStatusCode() == HttpStatus.BAD_REQUEST)
